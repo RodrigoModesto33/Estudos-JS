@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <title>Coin Market Cap</title>
+</head>
+
+<body>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item active" aria-current="page">Coin Market Cap</li>
+        </ol>
+      </nav>
+    
+      <div class="d-flex p-3 bd-highlight">
+        <div id='coins'></div>
+      </div>
+   
+
+
+    <script type="text/javascript">
+    
+        var apiKey = {
+            key: 'ee41f812-2568-4d12-b881-c5efc9996c50'
+        }
+
+        fetch('https://pro-api.coinmarketcap.com/v1/cryptocurrency/map?CMC_PRO_API_KEY=' + apiKey.key)
+            .then((response) => {
+                if (!response.ok) throw new Error("Erro ao executar a requisição, status " + response.status);
+                return response.json();
+            })
+            .then((api) => {
+
+                var texto = " ";
+                for (let i = 0; i < 10; i++) {
+                    texto = texto + `
+                   
+                    <table id="example" class="display">
+                        <thead class="media-body">
+                        <th class="mt-2">${api.data[i].name}</th>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                        <td> Simbolo: ${api.data[i].symbol}</td>
+                        <td> Primeiros dados históricos: ${api.data[i].first_historical_data}</td>
+                        </tr>
+                        </tbody>
+             
+                    </table>
+               
+                    `;
+
+                    document.getElementById("coins").innerHTML = texto;
+
+                }
+            })
+            .catch((error) => {
+                console.error(error.message);
+            });
+    </script>
+
+    <style>
+         td {
+  border: 1px solid black;
+}
+    </style>
+</body>
+
+</html>
